@@ -27,6 +27,18 @@ router.get('/:userId', async (req, res) => {
     }
 });
 
+router.put('/:userId', async (req, res) => {
+    try {
+        if (req.user._id !== req.params.userId) {
+            return res.status(403).send("You're not allowed to do that!");
+        }
+        const updatedUser = await User.findByIdAndUpdate(req.user._id, req.body, { new: true });
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
+
 
 
 module.exports = router;
