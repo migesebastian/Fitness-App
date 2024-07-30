@@ -1,19 +1,6 @@
 const mongoose = require('mongoose');
 
-const ProfileSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  profilePicture: { type: String },
-  fitnessGoals: { type: [String] },
-});
-
-
-
-const WorkoutSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  date: { type: Date, default: Date.now },
-  exercises: [ExerciseSchema],
-});
-
+// Define Exercise Schema first since it's used in Workout Schema
 const ExerciseSchema = new mongoose.Schema({
   name: String,
   sets: Number,
@@ -21,6 +8,17 @@ const ExerciseSchema = new mongoose.Schema({
   weight: Number,
 });
 
+const ProfileSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  profilePicture: { type: String },
+  fitnessGoals: { type: [String] },
+});
+
+const WorkoutSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  date: { type: Date, default: Date.now },
+  exercises: [ExerciseSchema],
+});
 
 const GoalSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -29,7 +27,6 @@ const GoalSchema = new mongoose.Schema({
   targetDate: { type: Date },
 });
 
-
 const MealSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   date: { type: Date, default: Date.now },
@@ -37,21 +34,18 @@ const MealSchema = new mongoose.Schema({
   calories: { type: Number },
 });
 
-
 const ProgressPictureSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   date: { type: Date, default: Date.now },
   pictureURL: { type: String, required: true },
 });
 
-
-
 // Create Models
 const Profile = mongoose.model('Profile', ProfileSchema);
 const FitnessGoal = mongoose.model('FitnessGoal', GoalSchema);
 const ProgressPicture = mongoose.model('ProgressPicture', ProgressPictureSchema);
 const Workout = mongoose.model('Workout', WorkoutSchema);
-const Exercise = mongoose.model('Exercise', exerciseSchema);
+const Exercise = mongoose.model('Exercise', ExerciseSchema);
 const Meal = mongoose.model('Meal', MealSchema);
 
 // Export Models
