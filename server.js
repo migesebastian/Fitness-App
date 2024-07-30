@@ -4,10 +4,16 @@ const cors = require('cors');
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+
 const testJWTRouter = require('./controllers/test-jwt');
-const usersRouter = require('./controllers/users');
-const profilesRouter = require('./controllers/profiles');
-const workoutsRouter = require('./controllers/workouts');
+const usersRouter = require('./controllers/user');
+const profilesRouter = require('./controllers/profileController');
+const fitnessGoalController = require('./controllers/fitnessGoalController');
+const progressPictureController = require('./controllers/progressPictureController');
+const workoutController = require('./controllers/workoutController');
+const exerciseController = require('./controllers/exerciseController');
+const mealController = require('./controllers/mealController');
+
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -17,11 +23,15 @@ mongoose.connection.on('connected', () => {
 app.use(cors());
 app.use(express.json());
 
-// Routes go here
 app.use('/test-jwt', testJWTRouter);
 app.use('/users', usersRouter);
 app.use('/profiles', profilesRouter);
-app.use('/workouts', workoutsRouter);
+app.use('/fitness-goals', fitnessGoalController);
+app.use('/progress-pictures', progressPictureController);
+app.use('/workouts', workoutController);
+app.use('/exercises', exerciseController);
+app.use('/meals', mealController);
+
 
 app.listen(3000, () => {
     console.log('The express app is ready!');
