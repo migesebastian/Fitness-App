@@ -1,6 +1,7 @@
 const express = require('express');
 const verifyToken = require('../middleware/verify-token');
 const User = require('../models/user');
+const {Profile} = require('../models/workout')
 const router = express.Router();
 
 // ========= Protected Routes =========
@@ -12,7 +13,8 @@ router.get('/:userId', async (req, res) => {
         if (req.user._id !== req.params.userId){
             return res.status(401).json({ error: "Unauthorized" });
         }
-        const user = await User.findById(req.user._id);
+        const user = await User.findById(req.user._id).populate('ProfileId')
+        console.log(user)
         if (!user) {
             res.status(404);
             throw new Error('Profile not found.');
@@ -27,6 +29,25 @@ router.get('/:userId', async (req, res) => {
     }
 });
 
+router.post('/:userId', async (req, res) => {
+    try {
+        if (req.user._id !== req.params.userId){
+            return res.status(401).json({ error: "Unauthorized" });
+        }
+        const user = await Profile.findById(req.user._id);
+        if (!user) {
+            res.status(404);
+            throw new Error('Profile not found.');
+        }
+        res.json({ user });
+    } catch (error) {
+        if (res.statusCode === 404) {
+            res.status(404).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: error.message });
+        }
+    }
+});
 router.put('/:userId', async (req, res) => {
     try {
         if (req.user._id !== req.params.userId) {
