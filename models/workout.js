@@ -30,8 +30,11 @@ const GoalSchema = new mongoose.Schema({
 const MealSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   date: { type: Date, default: Date.now },
-  foodItems: { type: [String] },
+  name: { type: [String] },
   calories: { type: Number },
+  protein: {type: Number},
+  carbs: {type: Number},
+  fats: {type: Number},
 });
 
 const ProgressPictureSchema = new mongoose.Schema({

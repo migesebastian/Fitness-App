@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    ProfileId: { type: mongoose.Schema.Types.ObjectId, ref: 'Profile'},
 });
 
 userSchema.set('toJSON', {
